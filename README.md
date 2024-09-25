@@ -1,18 +1,99 @@
-# Título do projeto
+# ETAPA 5 AC1
 
-Um parágrafo da descrição do projeto vai aqui
+Criação de uma classe para um universidade aprovar ou desaprovar o aluno
 
-## 🚀 Começando
+### 📋 Códigos
 
-Pode colocar o enunciado para o desenvolvimento do projeto
+public class Aluno { //Criação da Classe e de seus Atributos
+    private String nome;
+    private String ra;
+    private double[] notas;
+    private double presenca;
+    private boolean isEAD; // Aqui é para saber se o aluno é do presencial ou ela faz via EAD
 
-### 📋 Pré-requisitos
+    public Aluno(String nome, String ra, boolean isEAD) { //Metodo constructor para controlar os atributos
+        this.nome = nome;
+        this.ra = ra;
+        this.isEAD = isEAD;
+        this.notas = new double[4]; // Para até 4 notas caso seja necessário
+        this.presenca = 0.0; // Presença inicial
+    }
 
-De que coisas você precisa para instalar o software e como instalá-lo?
+    public void setNotas(double... notas) { //Metodo para definir as notas
+        if (notas.length > 4) {
+           System.out.println("Número máximo de notas é 4.");
+        }
+        this.notas = notas;
+    }
 
-```
-Dar exemplos
-```
+    public void setPresenca(double presenca) { // Metodo para definir a presença do aluno
+        this.presenca = presenca;
+    }
+
+    public double calcularNotaFinal() { //Metodo para calcular a nota final do aluno com base nos criterios colocados pela universidade
+        int numNotas = 0;
+        for (double nota : notas) {
+            if (nota != 0) {
+                numNotas++;
+            }
+        }
+
+        switch (numNotas) {
+            case 1:
+            case 2:
+                return calcularMediaAritmetica();
+            case 3:
+                return calcularMediaPonderada();
+            case 4:
+                return calcularMediaComPesos();
+            default:
+                return 0.0; // Em caso de não houver notas
+        }
+    }
+
+    private double calcularMediaAritmetica() { //Media Aritmetica pois existem somente 2 notas
+        double soma = 0.0;
+        for (double nota : notas) {
+            soma += nota;
+        }
+        return soma / notas.length; // Media das notas fornecidas
+    }
+
+    private double calcularMediaPonderada() {
+        double peso1 = 1;
+        double peso2 = 2;
+        double peso3 = 2;
+        double soma = (notas[0] * peso1) + (notas[1] * peso2) + (notas[2] * peso3);
+        return soma / (peso1 + peso2 + peso3); // Media ponderada pois existem 3 notas
+    }
+
+    private double calcularMediaComPesos() { 
+        return (notas[0] * 0.15) + (notas[1] * 0.30) + (notas[2] * 0.10) + (notas[3] * 0.45); //Equaçao da media com 4 notas
+    }
+
+    public String situacao() { //Condiçao para o aluno ser aprovado com base na presença dele
+        double notaFinal = calcularNotaFinal();
+        if (isEAD) {
+            return notaFinal >= 5 ? "Aprovado" : "Reprovado";
+        } else {
+            return (notaFinal >= 5 && presenca >= 75) ? "Aprovado" : "Reprovado";
+        }
+    }
+
+    public void SituacaoDoAluno() { //Modelo Visual de como sera rodado as informações fornecidas pela universidade
+        System.out.println("Nome: " + nome);
+        System.out.println("RA: " + ra);
+        System.out.println("Nota Final: " + calcularNotaFinal());
+        System.out.println("Situação: " + situacao());
+    }
+
+    public static void main(String[] args) {
+        Aluno aluno = new Aluno("João Carlos", "248152", false);
+        aluno.setNotas(7.0, 8.0, 6.0, 9.0);
+        aluno.setPresenca(80.0); // 80% de presença
+        aluno.SituacaoDoAluno();
+    }
+}
 
 ### 🔧 Instalação
 
@@ -31,5 +112,5 @@ Ferramentas utilizadas e bibliotecas
 
 ## ✒️ Autores
 
-* **Nome do desenvolvedor** - *Trabalho Inicial* - Nome da atividade
+João Carlos Ferreira de Araujo RA 248152 -- AC1 de Programação Orientada à Objetos
 
